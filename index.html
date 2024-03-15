@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON to HTML Table</title>
+</head>
+<body>
+
+<h2>JSON to HTML Table</h2>
+
+<table id="jsonTable">
+  <thead>
+    <tr></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  // Sample JSON data
+  var jsonData = {
+    "result": {
+      "id": 6,
+      "name": "Sweta Das",
+      "email": "sweta@yopmail.com",
+      "mobile": "5530",
+      "role": "User"
+      // Add more properties as needed
+    }
+  };
+
+  // Function to generate the HTML table
+  function generateTable(data) {
+    var table = document.getElementById('jsonTable');
+    var tbody = table.querySelector('tbody');
+
+    // Clear existing table data
+    tbody.innerHTML = "";
+
+    // Generate table rows
+    var row = "<tr>";
+    for (var key in data.result) {
+      row += "<td>" + data.result[key] + "</td>";
+    }
+    row += "</tr>";
+    tbody.innerHTML += row;
+  }
+
+  // Call the function with the provided JSON data
+  generateTable(jsonData);
+</script>
+
+</body>
+</html>

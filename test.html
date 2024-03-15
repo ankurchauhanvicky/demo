@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Sample API Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            overflow: auto;
+
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .card p {
+            margin: 10px 0;
+        }
+        
+    </style>
+</head>
+
+<body onload="get_staff_list()">
+<div>
+    <button id="logout" onclick="logout()">Logout</button>
+</div>
+<div id="output"></div>
+    <button class='btn btn-info' onclick="create_user()">register staff</button>
+    <table id='staff_table' class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <td> id </td>
+                <td> name </td>
+                <td> email </td>
+                <td>mobile</td>
+                <td>Role</td>
+                <td> action </td>
+            </tr>
+            <thead>
+            <tbody>
+            </tbody>
+    </table>
+
+
+    <!-- The Modal -->
+    <div class=" modal" id="myModal" onload="edit_staff()">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Form</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body container ">
+                    <form id="forms" onclick="update_edit(id)">
+                        <div class="form-group">
+                        <input type="hidden" id="id" name="id"><br>
+                        </div>
+                        <input type="text" id="name" name="name"><br>
+                        <input type="text" id="email" name="email"><br>
+                        <input type="text" id="role" name="role"><br>
+                        <button type="submit" class="btn btn-success" id="submit">Update </button>
+                    </form>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+       <!-- Data will be rendered here  -->
+    </div>
+    <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+
+
+
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+
+
+
+
+    
+
+
+    </script>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luX3VzZXIiLCJpYXQiOjE3MDkxMTM0NTcsImV4cCI6MTcwOTExNzA1NywibmJmIjoxNzA5MTEzNDU3LCJqdGkiOiJadzl4SVd0TjBJQno4OXF5Iiwic3ViIjoiNiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IMpmbXDoUUSi3KW3Hmvfr5god35K59RcyCFyfl2I-M4'; // Replace 'YOUR_BEARER_TOKEN_HERE' with your actual token
+  $.ajax({
+    type: "GET",
+    url: "http://127.0.0.1:8000/api/user",
+    headers: {
+      Authorization: 'Bearer ' + token
+    },
+    dataType: 'json',
+    success: function (result, status, xhr) {
+      console.log(result)
+      console.log(status)
+      console.log(xhr)
+      arry_staff = result;
+          var html = '';
+          arry_staff.forEach(function (item, index) {
+              console.log(item.id);
+              // alert(index)
+              html += '<tr>';
+              const keys = Object.keys(item);
+              
+              keys.forEach(function (key) {
+                  html += '<td> ' + item[key] + ' </td>';
+              })
+              console.warn(item.id);
+              html += '<td><button class = "btn btn-primary" '
+                  + 'onclick = "edit_staff(' + item.id + ')"   data-bs-toggle="modal" data-bs-target="#myModal"> Edit </button>';
+              html += '<button id="delete-record" class = "btn btn-danger" '
+                  + 'onclick= "delete_staff(' + item.id + ')">Delete</button></td></tr>';
+          })
+          $('#staff_table > tbody').html(html);
+      // ShowData(result);
+    },
+    error: function (xhr, status, error) {
+      alert(error);
+    }
+  });
+
+
+  // Fetch data from the API endpoint with the bearer token included in the headers
+  // fetch('http://127.0.0.1:8000/api/user', {
+  //   headers: {
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Authorization': `Bearer`+token
+  //   }
+  // })
+  //   .then(response => {
+  //     alert(response)
+  //     // Check if the response is successful
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     // Parse the JSON data
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     // Process the JSON data
+  //     displayData(data);
+  //   })
+  //   .catch(error => {
+  //     // Handle any errors
+  //     console.error('There was a problem with the fetch operation:', error);
+  //   });
+
+  // // Function to display the data in the HTML page
+  // function displayData(data) {
+  //   // Get a reference to the data container element
+  //   const dataContainer = document.getElementById('data-container');
+
+  //   // Create a list element to display the data
+  //   const list = document.createElement('ul');
+
+  //   // Loop through the data and create list items
+  //   data.forEach(item => {
+  //     const listItem = document.createElement('li');
+  //     listItem.textContent = item.name; // Assuming 'name' is a property of each item
+  //     list.appendChild(listItem);
+  //   });
+
+  //   // Append the list to the data container
+  //   dataContainer.appendChild(list);
+  // }
+</script> -->
+
+
+    <!-- <script>
+        /* declare an array to store staff records fetched from backend */
+        var arry_staff = [];
+        /* get staff records from backend */
+        function get_staff_list() {
+            var settings = {
+                "url": "http://127.0.0.1:8000/api/user",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + (sessionStorage.getItem("access_token") || '')
+                }
+            };
+            $.ajax(settings)
+                .done(update_staff_list);
+        }
+        /* update UI with staff records from backend*/
+        function update_staff_list(response) {
+            console.log(response)
+            arry_staff = response;
+            var html = '';
+            arry_staff.forEach(function (item, index) {
+                console.log(item.id);
+                html += '<tr>';
+                const keys = Object.keys(item);
+                keys.forEach(function (key) {
+                    html += '<td> ' + item[key] + ' </td>';
+
+                })
+                html += '<td><button class = "btn btn-primary" '
+                    + 'onclick = "edit_staff(' + index + ')" > Edit </button>';
+                html += '<button class = "btn btn-danger" '
+                    + 'onclick= "delete_staff(' + index + ')">Delete</button></td></tr>';
+            })
+            $('#staff_table > tbody').html(html);
+        }
+
+       
+    </script> -->
+
+<!-- 
+
+    <script>
+        // Function to fetch data from the API
+        async function fetchData() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/user');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Function to render data in cards
+        async function renderData() {
+            const container = document.querySelector('.container');
+            const data = await fetchData();
+
+            if (!data) {
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const title = document.createElement('h2');
+                title.textContent = item.name;
+
+                const body = document.createElement('p');
+                body.textContent = item.email;
+
+                card.appendChild(title);
+                card.appendChild(body);
+                container.appendChild(card);
+            });
+        }
+
+        // Call the renderData function to display data
+        renderData();
+    </script> -->
+
+</body>
+
+</html>

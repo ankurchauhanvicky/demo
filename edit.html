@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON API Data</title>
+</head>
+
+<body>
+
+  <div id="data-container">
+    <!-- Data will be displayed here -->
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luX3VzZXIiLCJpYXQiOjE3MDkxMTM0NTcsImV4cCI6MTcwOTExNzA1NywibmJmIjoxNzA5MTEzNDU3LCJqdGkiOiJadzl4SVd0TjBJQno4OXF5Iiwic3ViIjoiNiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IMpmbXDoUUSi3KW3Hmvfr5god35K59RcyCFyfl2I-M4'; // Replace 'YOUR_BEARER_TOKEN_HERE' with your actual token
+    $.ajax({
+      type: "GET",
+      url: "http://127.0.0.1:8000/api/user",
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      dataType: 'json',
+      success: function (result, status, xhr) {
+        console.log(result)
+        console.log(status)
+        console.log(xhr)
+        arry_staff = result;
+            var html = '';
+            arry_staff.forEach(function (item, index) {
+                console.log(item.id);
+                // alert(index)
+                html += '<tr>';
+                const keys = Object.keys(item);
+                
+                keys.forEach(function (key) {
+                    html += '<td> ' + item[key] + ' </td>';
+                })
+                console.warn(item.id);
+                html += '<td><button class = "btn btn-primary" '
+                    + 'onclick = "edit_staff(' + item.id + ')"   data-bs-toggle="modal" data-bs-target="#myModal"> Edit </button>';
+                html += '<button id="delete-record" class = "btn btn-danger" '
+                    + 'onclick= "delete_staff(' + item.id + ')">Delete</button></td></tr>';
+            })
+            $('#staff_table > tbody').html(html);
+        // ShowData(result);
+      },
+      error: function (xhr, status, error) {
+        alert(error);
+      }
+    });
+
+
+    // Fetch data from the API endpoint with the bearer token included in the headers
+    // fetch('http://127.0.0.1:8000/api/user', {
+    //   headers: {
+    //     'Access-Control-Allow-Origin': '*',
+    //     'Authorization': `Bearer`+token
+    //   }
+    // })
+    //   .then(response => {
+    //     alert(response)
+    //     // Check if the response is successful
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     // Parse the JSON data
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     // Process the JSON data
+    //     displayData(data);
+    //   })
+    //   .catch(error => {
+    //     // Handle any errors
+    //     console.error('There was a problem with the fetch operation:', error);
+    //   });
+
+    // // Function to display the data in the HTML page
+    // function displayData(data) {
+    //   // Get a reference to the data container element
+    //   const dataContainer = document.getElementById('data-container');
+
+    //   // Create a list element to display the data
+    //   const list = document.createElement('ul');
+
+    //   // Loop through the data and create list items
+    //   data.forEach(item => {
+    //     const listItem = document.createElement('li');
+    //     listItem.textContent = item.name; // Assuming 'name' is a property of each item
+    //     list.appendChild(listItem);
+    //   });
+
+    //   // Append the list to the data container
+    //   dataContainer.appendChild(list);
+    // }
+  </script>
+
+</body>
+
+</html>
